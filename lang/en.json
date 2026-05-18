@@ -1,0 +1,33 @@
+{
+    "nav.home": "Home",
+    "nav.projects": "Projects",
+    "nav.skills": "Skills",
+    "nav.timeline": "Timeline",
+    "nav.toggle_language": "PT",
+
+    "hero.title": "Backend Engineer",
+    "hero.subtitle": "Building reliable systems with PHP, Laravel & Docker.",
+    "hero.cta_projects": "View Projects",
+    "hero.cta_contact": "Get in Touch",
+
+    "projects.title": "Projects",
+    "projects.subtitle": "A selection of things I have built.",
+    "projects.view_source": "Source Code",
+    "projects.view_live": "Live Demo",
+    "projects.view_details": "View Details",
+    "projects.back": "Back to Projects",
+    "projects.tech_stack": "Tech Stack",
+    "projects.stars": "Stars",
+    "projects.forks": "Forks",
+    "projects.last_push": "Last Push",
+    "projects.empty": "No projects published yet.",
+
+    "skills.title": "Skills",
+    "skills.subtitle": "Technologies I work with.",
+
+    "timeline.title": "Timeline",
+    "timeline.subtitle": "My professional journey.",
+
+    "footer.rights": "All rights reserved.",
+    "footer.built_with": "Built with Laravel & Tailwind CSS."
+}
