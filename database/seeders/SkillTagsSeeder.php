@@ -12,11 +12,11 @@ class SkillTagsSeeder extends Seeder
     public function run(): void
     {
         $skills = [
-            'backend'  => ['PHP', 'Laravel', 'REST API', 'Pest', 'PHPStan'],
-            'frontend' => ['Tailwind CSS', 'Alpine.js', 'Blade', 'Vite'],
-            'devops'   => ['Docker', 'Docker Compose', 'GitHub Actions', 'Railway', 'Linux', 'Nginx'],
-            'database' => ['MySQL', 'Redis', 'Eloquent ORM'],
-            'tools'    => ['Git', 'VS Code', 'Postman'],
+            'backend'  => ['PHP', 'Laravel', 'Node.js', 'REST API', 'Redis'],
+            'frontend' => ['JavaScript', 'TypeScript', 'Vue.js', 'Angular', 'Tailwind CSS', 'Alpine.js'],
+            'database' => ['MySQL', 'PostgreSQL', 'MongoDB'],
+            'devops'   => ['Docker', 'Linux', 'AWS', 'CI/CD', 'GitHub Actions', 'GitLab CI'],
+            'tools'    => ['Git', 'Pest', 'PHPUnit', 'Laravel Dusk', 'WordPress', 'Moodle'],
         ];
 
         foreach ($skills as $category => $names) {

@@ -29,14 +29,17 @@ class SecurityHeaders
 
     private function csp(): string
     {
-        return implode('; ', [
+        $vite   = app()->isLocal() ? 'http://localhost:5173 ws://localhost:5173' : '';
+        $gfonts = 'https://fonts.googleapis.com https://fonts.gstatic.com';
+
+        return implode('; ', array_filter([
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'",
-            "style-src 'self' 'unsafe-inline'",
+            "script-src 'self' 'unsafe-inline'" . ($vite ? " $vite" : ''),
+            "style-src 'self' 'unsafe-inline' $gfonts" . ($vite ? " $vite" : ''),
             "img-src 'self' data: https:",
-            "font-src 'self'",
-            "connect-src 'self'",
+            "font-src 'self' $gfonts",
+            "connect-src 'self'" . ($vite ? " $vite" : ''),
             "frame-ancestors 'none'",
-        ]);
+        ]));
     }
 }
