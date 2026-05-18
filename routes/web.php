@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\ProjectController;
@@ -16,17 +17,21 @@ Route::middleware('throttle:public')->group(function () {
     Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline.index');
 });
 
+// Breeze post-login redirect target
+Route::get('/dashboard', fn () => redirect()->route('admin.projects.index'))
+    ->middleware(['auth', 'verified'])->name('dashboard');
+
 // Admin routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'throttle:admin'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', fn () => redirect()->route('admin.projects.index'))->name('dashboard');
 
-    Route::middleware('auth')->group(function () {
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    });
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('projects', AdminProjectController::class);
+    Route::post('projects/{project}/sync-github', [AdminProjectController::class, 'syncGithub'])
+        ->name('projects.sync-github');
 });
 
 require __DIR__.'/auth.php';
