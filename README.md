@@ -1,66 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Portfolio — Rodrigo Dias Sales
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> Personal portfolio and project showcase for [portfolio.daysrodrigo.com](https://portfolio.daysrodrigo.com)
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Layer | Technology |
+|-------|-----------|
+| Backend | PHP 8.4+, Laravel 11 |
+| Frontend | Tailwind CSS v3, Preline v2, Alpine.js |
+| Auth | Laravel Breeze (Blade) |
+| Database | MySQL 8.4 |
+| Cache (dev) | Redis |
+| Cache (prod) | Database (MySQL) |
+| Tests | Pest v3 |
+| Quality | PHPStan level 6, php-cs-fixer |
+| Infra | Docker, Docker Compose |
+| CI/CD | GitHub Actions → Railway |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Docker Desktop
+- Git
 
-## Learning Laravel
+No local PHP or Composer installation required — everything runs inside Docker.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+git clone https://github.com/DaysRodrigo/portfolio.git
+cd portfolio
+cp .env.example .env
+docker compose up -d
+docker compose exec app php artisan key:generate
+docker compose exec app php artisan migrate --seed
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Application available at **http://localhost:8080**
 
-## Laravel Sponsors
+## Daily Commands
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+# Start environment
+docker compose up -d
 
-### Premium Partners
+# Stop environment
+docker compose down
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# Artisan
+docker compose exec app php artisan <command>
 
-## Contributing
+# Composer
+docker compose exec app composer <command>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Tests
+docker compose exec app ./vendor/bin/pest
 
-## Code of Conduct
+# Tests with coverage
+docker compose exec app ./vendor/bin/pest --coverage --min=80
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# PHPStan
+docker compose exec app ./vendor/bin/phpstan analyse
 
-## Security Vulnerabilities
+# php-cs-fixer (dry-run)
+docker compose exec app ./vendor/bin/php-cs-fixer fix --dry-run --diff
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Project Structure
+
+```
+app/
+├── Actions/
+│   ├── Projects/          # CreateProjectAction, UpdateProjectAction, ReorderProjectsAction
+│   └── GitHub/            # SyncRepositoryDataAction
+├── Enums/
+│   ├── ProjectStatus.php  # draft, published, archived
+│   └── SkillCategory.php  # backend, frontend, devops, database, tools
+├── Http/
+│   ├── Controllers/
+│   │   ├── Public/        # Public-facing pages
+│   │   └── Admin/         # Admin panel (auth required)
+│   ├── Middleware/
+│   │   ├── SecurityHeaders.php
+│   │   ├── SetLocale.php
+│   │   └── HibernationWindow.php
+│   └── Requests/Projects/
+├── Models/
+│   ├── Project.php
+│   └── SkillTag.php
+├── Services/
+│   └── GitHubService.php  # GitHub API with 1h cache
+└── View/Components/
+
+lang/
+├── en.json                # Default (English) UI strings
+├── pt_BR.json             # Portuguese UI strings + validation
+└── pt_BR/                 # Validation, auth, pagination (laravel-lang)
+
+docker/
+├── nginx/default.conf
+└── php/php.ini
+```
+
+## Database Schema
+
+```
+projects       — title, slug, description, long_description, repo_url,
+                 live_url, cover_image, status (enum), display_order,
+                 tech_stack (json), github_stars, github_forks,
+                 github_last_push, github_synced_at
+
+skill_tags     — name, category (enum)
+
+project_skill  — project_id FK, skill_tag_id FK (pivot)
+
+users          — standard Laravel/Breeze table
+cache          — database cache (prod)
+```
+
+## Internationalisation
+
+Default locale: **English (`en`)**. Portuguese Brazilian (`pt_BR`) supported out of the box.
+
+Language is stored in the `app_locale` cookie (set via language toggle in the navbar).
+
+To add a new language:
+1. `docker compose exec app php artisan lang:add <locale>` — installs validation translations
+2. Create `lang/<locale>.json` copying `lang/en.json` and translating the values
+3. Add `'<locale>'` to `SUPPORTED_LOCALES` in `app/Http/Middleware/SetLocale.php`
+
+## Environment Variables
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `APP_KEY` | Laravel application key | generated |
+| `APP_URL` | Application URL | `http://localhost:8080` |
+| `DB_HOST` | MySQL host | `mysql` (Docker) |
+| `DB_DATABASE` | Database name | `portfolio` |
+| `DB_USERNAME` | Database user | `portfolio` |
+| `DB_PASSWORD` | Database password | — |
+| `REDIS_HOST` | Redis host | `redis` (Docker) |
+| `ADMIN_EMAIL` | Admin panel login | — |
+| `ADMIN_PASSWORD` | Admin panel password | — |
+| `GITHUB_TOKEN` | GitHub read-only personal token | — |
+| `CACHE_STORE` | Cache driver | `redis` (dev) / `database` (prod) |
+
+## CI/CD
+
+```
+Push to main → GitHub Actions
+  ├── tests  (PHP 8.4 + MySQL 8.4 + Redis, Pest --coverage --min=80)
+  └── lint   (php-cs-fixer + PHPStan level 6)
+        └── deploy → Railway CLI (railway up --detach)
+```
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Private project — all rights reserved.
