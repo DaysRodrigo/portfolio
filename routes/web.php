@@ -14,8 +14,8 @@ Route::middleware('throttle:public')->group(function () {
 Route::get('/dashboard', fn () => redirect()->route('admin.projects.index'))
     ->middleware(['auth', 'verified'])->name('dashboard');
 
-// Admin routes
-Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'throttle:admin'])->group(function () {
+// Admin routes — 2FA required after login
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'throttle.otp', '2fa', 'throttle:admin'])->group(function () {
     Route::get('/dashboard', fn () => redirect()->route('admin.projects.index'))->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

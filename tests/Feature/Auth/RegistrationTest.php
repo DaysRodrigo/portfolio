@@ -1,19 +1,19 @@
 <?php
 
-test('registration screen can be rendered', function () {
-    $response = $this->get('/register');
+// Registration is intentionally closed — only the admin account exists.
+// These tests verify that the routes return 404.
 
-    $response->assertStatus(200);
+test('registration screen is closed', function () {
+    $this->get('/register')->assertStatus(404);
 });
 
-test('new users can register', function () {
-    $response = $this->post('/register', [
-        'name' => 'Test User',
-        'email' => 'test@example.com',
-        'password' => 'password',
-        'password_confirmation' => 'password',
-    ]);
+test('registration endpoint is closed', function () {
+    $this->post('/register', [
+        'name'                  => 'Test User',
+        'email'                 => 'test@example.com',
+        'password'              => 'Str0ng!P@ssword1',
+        'password_confirmation' => 'Str0ng!P@ssword1',
+    ])->assertStatus(404);
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $this->assertGuest();
 });

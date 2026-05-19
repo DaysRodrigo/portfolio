@@ -27,12 +27,13 @@ class AppServiceProvider extends ServiceProvider
 
     private function configurePasswordDefaults(): void
     {
-        Password::defaults(fn () => Password::min(12)
-            ->mixedCase()
-            ->numbers()
-            ->symbols()
-            ->uncompromised()
-        );
+        // uncompromised() queries HaveIBeenPwned — only enforce in production
+        // to avoid external HTTP calls in tests and local dev.
+        Password::defaults(function () {
+            $rule = Password::min(12)->mixedCase()->numbers()->symbols();
+
+            return app()->isProduction() ? $rule->uncompromised() : $rule;
+        });
     }
 
     private function configureRateLimiting(): void

@@ -10,24 +10,24 @@
 
     <nav class="border-b border-gray-200 bg-white">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-            <div class="flex items-center gap-6">
-                <a href="{{ route('admin.projects.index') }}" class="text-sm font-semibold text-indigo-600">
-                    Portfolio Admin
+            <div class="flex items-center gap-5 text-sm">
+                <a href="{{ route('admin.profile.edit') }}"
+                   class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.profile*') ? 'font-semibold text-gray-900' : '' }}">
+                    Profile
                 </a>
                 <a href="{{ route('admin.projects.index') }}"
-                   class="text-sm text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.projects.*') ? 'font-semibold text-gray-900' : '' }}">
+                   class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.projects.*') ? 'font-semibold text-gray-900' : '' }}">
                     Projects
                 </a>
-            </div>
-            <div class="flex items-center gap-4 text-sm">
-                <a href="{{ route('home') }}" target="_blank" class="text-gray-500 hover:text-gray-700">
+                <a href="{{ route('home') }}" target="_blank" class="text-gray-600 hover:text-gray-900">
                     View Site ↗
                 </a>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="text-gray-500 hover:text-red-600">Logout</button>
-                </form>
             </div>
+
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" class="text-sm text-gray-500 hover:text-red-600">Logout</button>
+            </form>
         </div>
     </nav>
 
@@ -47,6 +47,8 @@
 
         @yield('content')
     </main>
+
+    @stack('overlay')
 
 </body>
 </html>

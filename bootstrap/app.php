@@ -16,6 +16,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SecurityHeaders::class,
             \App\Http\Middleware\SetLocale::class,
         ]);
+
+        // Named aliases so routes can use ->middleware('2fa') and ->middleware('throttle.otp')
+        $middleware->alias([
+            '2fa'          => \PragmaRX\Google2FALaravel\Middleware::class,
+            'throttle.otp' => \App\Http\Middleware\ThrottleOtpAttempts::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

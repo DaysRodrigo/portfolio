@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -21,16 +23,20 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'two_factor_secret',
+        'two_factor_confirmed_at',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
+     * two_factor_secret never leaves the server.
      *
      * @var list<string>
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_secret',
     ];
 
     /**
@@ -41,8 +47,21 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at'       => 'datetime',
+            'password'                => 'hashed',
+            // encrypted: transparent AES-256 encryption at rest via APP_KEY
+            'two_factor_secret'       => 'encrypted',
+            'two_factor_confirmed_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Returns true only when 2FA is fully set up:
+     * secret saved AND confirmed via first OTP scan.
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return $this->two_factor_secret !== null
+            && $this->two_factor_confirmed_at !== null;
     }
 }
