@@ -34,7 +34,7 @@ class SecurityHeaders
 
         return implode('; ', array_filter([
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline'" . ($vite ? " $vite" : ''),
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'" . ($vite ? " $vite" : ''),
             "style-src 'self' 'unsafe-inline' $gfonts" . ($vite ? " $vite" : ''),
             "img-src 'self' data: https:",
             "font-src 'self' $gfonts",

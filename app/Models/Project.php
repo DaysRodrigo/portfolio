@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Project extends Model
 {
@@ -39,6 +40,11 @@ class Project extends Model
         'github_stars'     => 'integer',
         'github_forks'     => 'integer',
     ];
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ProjectImage::class)->orderBy('order');
+    }
 
     public function skillTags(): BelongsToMany
     {

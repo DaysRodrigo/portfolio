@@ -53,6 +53,37 @@
             </div>
         </div>
 
+        {{-- Images --}}
+        <div>
+            <label class="mb-2 block text-sm font-medium">Screenshots</label>
+
+            @if($editing && $project->images->count())
+            <div class="mb-3 grid grid-cols-3 gap-2 sm:grid-cols-4">
+                @foreach($project->images as $image)
+                <div class="group relative">
+                    <img src="{{ Storage::url($image->path) }}" alt="{{ $image->alt }}"
+                         class="h-24 w-full rounded-lg object-cover">
+                    <form method="POST"
+                          action="{{ route('admin.projects.images.destroy', [$project, $image]) }}"
+                          onsubmit="return confirm('Remove this image?')"
+                          class="absolute right-1 top-1">
+                        @csrf @method('DELETE')
+                        <button type="submit"
+                                class="rounded bg-red-600 px-1.5 py-0.5 text-xs text-white opacity-0 transition group-hover:opacity-100">
+                            ✕
+                        </button>
+                    </form>
+                </div>
+                @endforeach
+            </div>
+            @endif
+
+            <input type="file" name="images[]" multiple accept="image/*"
+                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+            <p class="mt-1 text-xs text-gray-400">PNG, JPG, WebP — max 4 MB each. Multiple files allowed.</p>
+            @error('images.*') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+        </div>
+
     </div>
 
     {{-- Sidebar fields --}}

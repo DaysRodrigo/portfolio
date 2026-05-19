@@ -3,18 +3,11 @@
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\HomeController;
-use App\Http\Controllers\Public\ProjectController;
-use App\Http\Controllers\Public\SkillsController;
-use App\Http\Controllers\Public\TimelineController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
 Route::middleware('throttle:public')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-    Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::get('/skills', [SkillsController::class, 'index'])->name('skills.index');
-    Route::get('/timeline', [TimelineController::class, 'index'])->name('timeline.index');
 });
 
 // Breeze post-login redirect target
@@ -32,6 +25,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified', 'throttl
     Route::resource('projects', AdminProjectController::class);
     Route::post('projects/{project}/sync-github', [AdminProjectController::class, 'syncGithub'])
         ->name('projects.sync-github');
+    Route::delete('projects/{project}/images/{image}', [AdminProjectController::class, 'destroyImage'])
+        ->name('projects.images.destroy');
 });
 
 require __DIR__.'/auth.php';

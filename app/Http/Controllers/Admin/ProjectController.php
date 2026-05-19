@@ -7,10 +7,12 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\ProjectStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectImage;
 use App\Models\SkillTag;
 use App\Services\GitHubService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -45,10 +47,14 @@ class ProjectController extends Controller
             'display_order'    => 'integer|min:0',
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
+            'images'           => 'nullable|array',
+            'images.*'         => 'image|max:4096',
         ]);
 
         $project = Project::create($data);
         $project->skillTags()->sync($data['skill_tags'] ?? []);
+
+        $this->storeImages($request, $project);
 
         return redirect()->route('admin.projects.index')
             ->with('success', "Project \"{$project->title}\" created.");
@@ -76,17 +82,34 @@ class ProjectController extends Controller
             'display_order'    => 'integer|min:0',
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
+            'images'           => 'nullable|array',
+            'images.*'         => 'image|max:4096',
         ]);
 
         $project->update($data);
         $project->skillTags()->sync($data['skill_tags'] ?? []);
 
-        return redirect()->route('admin.projects.index')
+        $this->storeImages($request, $project);
+
+        return redirect()->route('admin.projects.edit', $project)
             ->with('success', "Project \"{$project->title}\" updated.");
+    }
+
+    public function destroyImage(Project $project, ProjectImage $image): RedirectResponse
+    {
+        Storage::disk('public')->delete($image->path);
+        $image->delete();
+
+        return redirect()->route('admin.projects.edit', $project)
+            ->with('success', 'Image removed.');
     }
 
     public function destroy(Project $project): RedirectResponse
     {
+        foreach ($project->images as $image) {
+            Storage::disk('public')->delete($image->path);
+        }
+
         $title = $project->title;
         $project->delete();
 
@@ -104,5 +127,19 @@ class ProjectController extends Controller
 
         return redirect()->route('admin.projects.index')
             ->with($synced ? 'success' : 'error', $message);
+    }
+
+    private function storeImages(Request $request, Project $project): void
+    {
+        if (! $request->hasFile('images')) {
+            return;
+        }
+
+        $order = $project->images()->max('order') ?? -1;
+
+        foreach ($request->file('images') as $file) {
+            $path = $file->store("projects/{$project->id}", 'public');
+            $project->images()->create(['path' => $path, 'order' => ++$order]);
+        }
     }
 }

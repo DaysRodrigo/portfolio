@@ -9,7 +9,7 @@
     <h1 class="text-2xl font-bold">Edit: {{ $project->title }}</h1>
 </div>
 
-<form method="POST" action="{{ route('admin.projects.update', $project) }}" class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+<form method="POST" action="{{ route('admin.projects.update', $project) }}" enctype="multipart/form-data" class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
     @csrf
     @method('PUT')
 

@@ -6,38 +6,38 @@ namespace App\Data;
 
 class TimelineData
 {
-    /** @return array<int, array<string, string>> */
+    /** @return array<int, array<string, mixed>> */
     public static function all(): array
     {
         return [
             [
                 'type'        => 'work',
-                'title'       => 'Backend Developer',
-                'company'     => 'Tempos Brilhantes',
-                'location'    => 'Brazil · Remote',
-                'start'       => '2024-04',
+                'title'       => __('timeline.job.tempos_brilhantes.title'),
+                'company'     => 'Associação Tempos Brilhantes',
+                'location'    => 'Aveiro, Portugal · Remote',
+                'start'       => '2022-07',
                 'end'         => '2026-04',
-                'description' => 'Developed and maintained Laravel-based web applications. Built RESTful APIs, integrated third-party services, and improved system performance. Worked with MySQL, Redis, and Docker in a CI/CD environment.',
-                'skills'      => ['PHP', 'Laravel', 'MySQL', 'Redis', 'Docker', 'REST API'],
+                'description' => __('timeline.job.tempos_brilhantes.description'),
+                'skills'      => ['PHP', 'Laravel', 'Node.js', 'MySQL', 'MongoDB', 'WordPress', 'Moodle', 'Docker', 'GitLab CI'],
             ],
             [
                 'type'        => 'work',
-                'title'       => 'PHP Developer',
-                'company'     => 'Freelance',
-                'location'    => 'Brazil · Remote',
-                'start'       => '2022-01',
-                'end'         => '2024-03',
-                'description' => 'Delivered custom web solutions using PHP and Laravel for clients across education and business sectors. Implemented WordPress and Moodle customisations and RESTful API integrations.',
-                'skills'      => ['PHP', 'Laravel', 'WordPress', 'Moodle', 'MySQL', 'JavaScript'],
+                'title'       => __('timeline.job.icatu.title'),
+                'company'     => 'Icatu Seguros',
+                'location'    => 'Rio de Janeiro, Brazil',
+                'start'       => '2021-08',
+                'end'         => '2022-07',
+                'description' => __('timeline.job.icatu.description'),
+                'skills'      => ['Angular', 'WordPress', 'JavaScript', 'HTML', 'CSS', 'GraphQL'],
             ],
             [
                 'type'        => 'education',
-                'title'       => 'Systems Analysis and Development',
-                'company'     => 'UNIP — Universidade Paulista',
-                'location'    => 'Brazil',
-                'start'       => '2021-01',
-                'end'         => '2023-12',
-                'description' => 'Focused on software engineering, databases, algorithms, and web development fundamentals.',
+                'title'       => __('timeline.edu.estacio.title'),
+                'company'     => 'Estácio de Sá (UNESA)',
+                'location'    => 'Rio de Janeiro, Brazil',
+                'start'       => '2021-03',
+                'end'         => '2024-03',
+                'description' => __('timeline.edu.estacio.description'),
                 'skills'      => [],
             ],
         ];

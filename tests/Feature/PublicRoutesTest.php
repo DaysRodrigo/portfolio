@@ -9,36 +9,24 @@ it('home page returns 200', function () {
     $this->get('/')->assertOk();
 });
 
-it('projects index returns 200', function () {
-    $this->get('/projects')->assertOk();
+it('home page shows published projects', function () {
+    $published = Project::factory()->create(['status' => ProjectStatus::Published]);
+    $draft     = Project::factory()->create(['status' => ProjectStatus::Draft]);
+
+    $this->get('/')
+        ->assertOk()
+        ->assertSee($published->title)
+        ->assertDontSee($draft->title);
 });
 
-it('skills page returns 200', function () {
-    $this->get('/skills')->assertOk();
+it('home page shows timeline section', function () {
+    $this->get('/')->assertOk()->assertSee('id="about"', false);
 });
 
-it('timeline page returns 200', function () {
-    $this->get('/timeline')->assertOk();
+it('home page shows skills section', function () {
+    $this->get('/')->assertOk()->assertSee('id="skills"', false);
 });
 
-it('project detail returns 200 for published project', function () {
-    $project = Project::factory()->create([
-        'status' => ProjectStatus::Published,
-        'slug'   => 'test-project',
-    ]);
-
-    $this->get("/projects/{$project->slug}")->assertOk();
-});
-
-it('project detail returns 404 for draft project', function () {
-    $project = Project::factory()->create([
-        'status' => ProjectStatus::Draft,
-        'slug'   => 'hidden-project',
-    ]);
-
-    $this->get("/projects/{$project->slug}")->assertNotFound();
-});
-
-it('project detail returns 404 for unknown slug', function () {
-    $this->get('/projects/does-not-exist')->assertNotFound();
+it('home page shows projects section', function () {
+    $this->get('/')->assertOk()->assertSee('id="projects"', false);
 });

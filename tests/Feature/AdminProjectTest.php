@@ -62,7 +62,7 @@ it('admin can update a project', function () {
             'status'        => 'published',
             'display_order' => 1,
         ])
-        ->assertRedirect('/admin/projects');
+        ->assertRedirect("/admin/projects/{$project->id}/edit");
 
     expect($project->fresh()->title)->toBe('New Title');
 });
