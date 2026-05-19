@@ -75,8 +75,18 @@ class GitHubService
             return null;
         }
 
-        if (preg_match('#github\.com/([a-zA-Z0-9_.\-]+/[a-zA-Z0-9_.\-]+?)(?:\.git)?(?:/.*)?$#', $url, $matches)) {
-            return $matches[1];
+        // Extract owner/repo — segments must be alphanumeric (no ".." path traversal)
+        if (preg_match('#github\.com/([a-zA-Z0-9_][a-zA-Z0-9_.\-]*/[a-zA-Z0-9_][a-zA-Z0-9_.\-]*?)(?:\.git)?(?:/.*)?$#', $url, $matches)) {
+            $repoPath = $matches[1];
+
+            // Extra safety: reject anything containing ".." segments
+            if (str_contains($repoPath, '..')) {
+                Log::warning('GitHubService: rejected path traversal attempt', ['url' => $url]);
+
+                return null;
+            }
+
+            return $repoPath;
         }
 
         return null;
