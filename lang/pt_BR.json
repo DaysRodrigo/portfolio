@@ -300,6 +300,9 @@
     "timeline.edu.estacio.title": "Análise e Desenvolvimento de Sistemas",
     "timeline.edu.estacio.description": "Formação em engenharia de software, banco de dados, algoritmos e fundamentos de desenvolvimento web.",
 
+    "contact.title": "Contato",
+    "contact.subtitle": "Vamos nos conectar.",
+
     "footer.rights": "Todos os direitos reservados.",
     "footer.built_with": "Construído com Laravel & Tailwind CSS."
 }

@@ -34,6 +34,9 @@ class SecurityHeaders
 
         return implode('; ', array_filter([
             "default-src 'self'",
+            // Alpine.js evaluates x-data/x-on expressions via new Function() which
+            // requires 'unsafe-eval'. Removing it breaks Alpine entirely.
+            // Mitigation: default-src 'self' prevents loading external scripts.
             "script-src 'self' 'unsafe-inline' 'unsafe-eval'" . ($vite ? " $vite" : ''),
             "style-src 'self' 'unsafe-inline' $gfonts" . ($vite ? " $vite" : ''),
             "img-src 'self' data: https:",

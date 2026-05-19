@@ -12,12 +12,13 @@ return [
      *
      * In case you need your users to be asked for a new one time passwords from time to time.
      */
-    'lifetime' => env('OTP_LIFETIME', 0), // 0 = eternal
+    'lifetime' => env('OTP_LIFETIME', 30), // 30 minutes of inactivity → re-challenge
 
     /*
      * Renew lifetime at every new request.
+     * Disabled so the 30-min window is absolute inactivity, not sliding.
      */
-    'keep_alive' => env('OTP_KEEP_ALIVE', true),
+    'keep_alive' => env('OTP_KEEP_ALIVE', false),
 
     /*
      * Auth container binding.

@@ -49,7 +49,7 @@ class ProjectController extends Controller
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
             'images'           => 'nullable|array',
-            'images.*'         => 'image:jpeg,png,webp,gif|max:4096',
+            'images.*'         => 'image:jpeg,png,webp,gif|max:1536',
         ]);
 
         $project = Project::create($data);
@@ -86,11 +86,29 @@ class ProjectController extends Controller
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
             'images'           => 'nullable|array',
-            'images.*'         => 'image:jpeg,png,webp,gif|max:4096',
+            'images.*'         => 'image:jpeg,png,webp,gif|max:1536',
+            'delete_images'    => 'nullable|array',
+            'delete_images.*'  => 'integer|exists:project_images,id',
+            'image_order'      => 'nullable|array',
+            'image_order.*'    => 'integer',
         ]);
 
         $project->update($data);
         $project->skillTags()->sync($data['skill_tags'] ?? []);
+
+        // Delete marked images
+        foreach ($data['delete_images'] ?? [] as $imageId) {
+            $image = $project->images()->find($imageId);
+            if ($image) {
+                Storage::disk('public')->delete($image->path);
+                $image->delete();
+            }
+        }
+
+        // Reorder remaining images
+        foreach ($data['image_order'] ?? [] as $position => $imageId) {
+            $project->images()->where('id', $imageId)->update(['order' => $position]);
+        }
 
         $this->storeImages($request, $project);
 
@@ -102,6 +120,8 @@ class ProjectController extends Controller
 
     public function destroyImage(Project $project, ProjectImage $image): RedirectResponse
     {
+        abort_if($image->project_id !== $project->id, 404);
+
         Storage::disk('public')->delete($image->path);
         $image->delete();
 

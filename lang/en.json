@@ -38,6 +38,9 @@
     "timeline.edu.estacio.title": "Associate Degree in Systems Analysis and Development",
     "timeline.edu.estacio.description": "Focused on software engineering, databases, algorithms, and web development fundamentals.",
 
+    "contact.title": "Contact",
+    "contact.subtitle": "Let's connect.",
+
     "footer.rights": "All rights reserved.",
     "footer.built_with": "Built with Laravel & Tailwind CSS."
 }

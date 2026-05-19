@@ -27,7 +27,7 @@
         <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
 
             <a href="{{ route('home') }}" class="text-lg font-semibold tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400">
-                Rodrigo<span class="text-indigo-600 dark:text-indigo-400">.</span>
+                Rodrigo
             </a>
 
             {{-- Desktop nav --}}
@@ -104,7 +104,7 @@
     </main>
 
     {{-- Footer --}}
-    <footer id="contact" class="border-t border-gray-200 bg-white py-8 dark:border-gray-800 dark:bg-gray-950">
+    <footer class="border-t border-gray-200 bg-white py-8 dark:border-gray-800 dark:bg-gray-950">
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="flex flex-col items-center justify-between gap-2 text-sm text-gray-500 sm:flex-row dark:text-gray-400">
                 <p>&copy; {{ date('Y') }} Rodrigo Dias Sales. {{ __('footer.rights') }}</p>
