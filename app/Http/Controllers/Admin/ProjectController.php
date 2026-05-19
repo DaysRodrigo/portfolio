@@ -12,6 +12,7 @@ use App\Models\SkillTag;
 use App\Services\GitHubService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -48,13 +49,15 @@ class ProjectController extends Controller
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
             'images'           => 'nullable|array',
-            'images.*'         => 'image|max:4096',
+            'images.*'         => 'image:jpeg,png,webp,gif|max:4096',
         ]);
 
         $project = Project::create($data);
         $project->skillTags()->sync($data['skill_tags'] ?? []);
 
         $this->storeImages($request, $project);
+
+        Log::info('Project created', ['user_id' => auth()->id(), 'project_id' => $project->id, 'title' => $project->title]);
 
         return redirect()->route('admin.projects.index')
             ->with('success', "Project \"{$project->title}\" created.");
@@ -83,13 +86,15 @@ class ProjectController extends Controller
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
             'images'           => 'nullable|array',
-            'images.*'         => 'image|max:4096',
+            'images.*'         => 'image:jpeg,png,webp,gif|max:4096',
         ]);
 
         $project->update($data);
         $project->skillTags()->sync($data['skill_tags'] ?? []);
 
         $this->storeImages($request, $project);
+
+        Log::info('Project updated', ['user_id' => auth()->id(), 'project_id' => $project->id, 'title' => $project->title]);
 
         return redirect()->route('admin.projects.edit', $project)
             ->with('success', "Project \"{$project->title}\" updated.");
@@ -111,7 +116,10 @@ class ProjectController extends Controller
         }
 
         $title = $project->title;
+        $id    = $project->id;
         $project->delete();
+
+        Log::warning('Project deleted', ['user_id' => auth()->id(), 'project_id' => $id, 'title' => $title]);
 
         return redirect()->route('admin.projects.index')
             ->with('success', "Project \"{$title}\" deleted.");

@@ -61,7 +61,7 @@
                         <a href="{{ route('admin.projects.edit', $project) }}"
                            class="text-xs text-gray-600 hover:text-gray-900">Edit</a>
                         <form method="POST" action="{{ route('admin.projects.destroy', $project) }}"
-                              onsubmit="return confirm('Delete {{ addslashes($project->title) }}?')">
+                              onsubmit="return confirm('Delete ' + @json($project->title) + '?')">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-xs text-red-500 hover:text-red-700">Delete</button>

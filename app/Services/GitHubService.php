@@ -62,7 +62,20 @@ class GitHubService
             return null;
         }
 
-        if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?(?:/.*)?$#', $url, $matches)) {
+        // Validate it is a well-formed URL pointing strictly to github.com (SSRF prevention)
+        $parsed = parse_url($url);
+
+        if (
+            ! isset($parsed['host']) ||
+            ! in_array(strtolower($parsed['host']), ['github.com', 'www.github.com'], strict: true) ||
+            ! in_array($parsed['scheme'] ?? '', ['https', 'http'], strict: true)
+        ) {
+            Log::warning('GitHubService: rejected non-GitHub URL', ['url' => $url]);
+
+            return null;
+        }
+
+        if (preg_match('#github\.com/([a-zA-Z0-9_.\-]+/[a-zA-Z0-9_.\-]+?)(?:\.git)?(?:/.*)?$#', $url, $matches)) {
             return $matches[1];
         }
 
