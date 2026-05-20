@@ -37,7 +37,7 @@
 </section>
 
 {{-- ── About / Timeline ─────────────────────────────────────────────── --}}
-<section id="about" class="py-20 bg-gray-50 dark:bg-gray-900">
+<section id="timeline" class="py-20 bg-gray-50 dark:bg-gray-900">
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
         <h2 class="mb-3 text-3xl font-bold">{{ __('timeline.title') }}</h2>
         <p class="mb-12 text-gray-500 dark:text-gray-400">{{ __('timeline.subtitle') }}</p>

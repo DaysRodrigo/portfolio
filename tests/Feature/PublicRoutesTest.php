@@ -20,7 +20,7 @@ it('home page shows published projects', function () {
 });
 
 it('home page shows timeline section', function () {
-    $this->get('/')->assertOk()->assertSee('id="about"', false);
+    $this->get('/')->assertOk()->assertSee('id="timeline"', false);
 });
 
 it('home page shows skills section', function () {

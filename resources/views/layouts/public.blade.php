@@ -34,7 +34,7 @@
 
             {{-- Desktop nav --}}
             <div class="hidden items-center gap-6 text-sm font-medium sm:flex">
-                <a href="#about" class="hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('nav.about') }}</a>
+                <a href="#timeline" class="hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('nav.timeline') }}</a>
                 <a href="#projects" class="hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('nav.projects') }}</a>
                 <a href="#skills" class="hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('nav.skills') }}</a>
                 <a href="#contact" class="hover:text-indigo-600 dark:hover:text-indigo-400">{{ __('nav.contact') }}</a>
@@ -92,7 +92,7 @@
         {{-- Mobile menu --}}
         <div id="mobile-menu" class="hs-collapse hidden overflow-hidden sm:hidden">
             <div class="flex flex-col gap-1 px-4 pb-4 text-sm font-medium">
-                <a href="#about" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('nav.about') }}</a>
+                <a href="#timeline" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('nav.timeline') }}</a>
                 <a href="#projects" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('nav.projects') }}</a>
                 <a href="#skills" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('nav.skills') }}</a>
                 <a href="#contact" class="rounded-md px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-800">{{ __('nav.contact') }}</a>
