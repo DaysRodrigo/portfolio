@@ -14,6 +14,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ProjectController extends Controller
@@ -40,16 +41,16 @@ class ProjectController extends Controller
         $data = $request->validate([
             'title'            => 'required|string|max:120',
             'slug'             => 'required|string|max:120|unique:projects,slug|alpha_dash',
-            'description'      => 'required|string',
-            'long_description' => 'nullable|string',
-            'repo_url'         => 'nullable|url|max:255',
-            'live_url'         => 'nullable|url|max:255',
-            'status'           => 'required|in:draft,published,archived',
-            'display_order'    => 'integer|min:0',
+            'description'      => 'required|string|max:2000',
+            'long_description' => 'nullable|string|max:10000',
+            'repo_url'         => 'nullable|url:http,https|max:255',
+            'live_url'         => 'nullable|url:http,https|max:255',
+            'status'           => ['required', Rule::enum(ProjectStatus::class)],
+            'display_order'    => 'nullable|integer|min:0|max:65535',
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
-            'images'           => 'nullable|array',
-            'images.*'         => 'image:jpeg,png,webp,gif|max:1536',
+            'images'           => 'nullable|array|max:20',
+            'images.*'         => 'image|mimes:jpeg,png,webp,gif|max:1536',
         ]);
 
         $project = Project::create($data);
@@ -76,21 +77,21 @@ class ProjectController extends Controller
     {
         $data = $request->validate([
             'title'            => 'required|string|max:120',
-            'slug'             => "required|string|max:120|unique:projects,slug,{$project->id}|alpha_dash",
-            'description'      => 'required|string',
-            'long_description' => 'nullable|string',
-            'repo_url'         => 'nullable|url|max:255',
-            'live_url'         => 'nullable|url|max:255',
-            'status'           => 'required|in:draft,published,archived',
-            'display_order'    => 'integer|min:0',
+            'slug'             => ['required', 'string', 'max:120', Rule::unique('projects', 'slug')->ignore($project->id), 'alpha_dash'],
+            'description'      => 'required|string|max:2000',
+            'long_description' => 'nullable|string|max:10000',
+            'repo_url'         => 'nullable|url:http,https|max:255',
+            'live_url'         => 'nullable|url:http,https|max:255',
+            'status'           => ['required', Rule::enum(ProjectStatus::class)],
+            'display_order'    => 'nullable|integer|min:0|max:65535',
             'skill_tags'       => 'nullable|array',
             'skill_tags.*'     => 'integer|exists:skill_tags,id',
-            'images'           => 'nullable|array',
-            'images.*'         => 'image:jpeg,png,webp,gif|max:1536',
+            'images'           => 'nullable|array|max:20',
+            'images.*'         => 'image|mimes:jpeg,png,webp,gif|max:1536',
             'delete_images'    => 'nullable|array',
-            'delete_images.*'  => 'integer|exists:project_images,id',
+            'delete_images.*'  => ['integer', Rule::exists('project_images', 'id')->where('project_id', $project->id)],
             'image_order'      => 'nullable|array',
-            'image_order.*'    => 'integer',
+            'image_order.*'    => ['integer', Rule::exists('project_images', 'id')->where('project_id', $project->id)],
         ]);
 
         $project->update($data);

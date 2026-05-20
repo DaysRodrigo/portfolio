@@ -23,17 +23,19 @@
 
         <div>
             <label class="mb-1 block text-sm font-medium">Short Description <span class="text-red-500">*</span></label>
-            <textarea name="description" rows="3"
+            <textarea name="description" rows="3" maxlength="2000"
                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       required>{{ old('description', $project->description ?? '') }}</textarea>
+            <p class="mt-1 text-xs text-gray-400">Max 2000 characters.</p>
             @error('description') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
         <div>
             <label class="mb-1 block text-sm font-medium">Long Description</label>
-            <textarea name="long_description" rows="6"
+            <textarea name="long_description" rows="6" maxlength="10000"
                       class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                       >{{ old('long_description', $project->long_description ?? '') }}</textarea>
+            <p class="mt-1 text-xs text-gray-400">Max 10 000 characters.</p>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2">
