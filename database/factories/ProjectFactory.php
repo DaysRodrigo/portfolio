@@ -15,9 +15,9 @@ class ProjectFactory extends Factory
         $title = $this->faker->unique()->words(3, true);
 
         return [
-            'title'            => ucwords($title),
+            'title'            => ['en' => ucwords($title)],
             'slug'             => Str::slug($title),
-            'description'      => $this->faker->sentence(),
+            'description'      => ['en' => $this->faker->sentence()],
             'long_description' => null,
             'repo_url'         => null,
             'live_url'         => null,

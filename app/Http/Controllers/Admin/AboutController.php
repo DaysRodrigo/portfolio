@@ -23,17 +23,23 @@ class AboutController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'name'               => 'required|string|max:100',
-            'job_title'          => 'required|string|max:100',
-            'tagline'            => 'required|string|max:255',
-            'about'              => 'nullable|string|max:2000',
-            'github_url'         => 'nullable|url:http,https|max:255',
-            'github_username'    => 'nullable|string|max:100',
-            'linkedin_url'       => 'nullable|url:http,https|max:255',
-            'linkedin_username'  => 'nullable|string|max:100',
-            'email'              => 'nullable|email:rfc,dns|max:255',
-            'whatsapp'           => ['nullable', 'string', 'max:30', 'regex:/^[0-9]+$/'],
-            'whatsapp_label'     => 'nullable|string|max:30',
+            'name'                  => 'required|string|max:100',
+            'job_title'             => ['required', 'array'],
+            'job_title.en'          => ['required', 'string', 'max:100'],
+            'job_title.pt_BR'       => ['nullable', 'string', 'max:100'],
+            'tagline'               => ['required', 'array'],
+            'tagline.en'            => ['required', 'string', 'max:255'],
+            'tagline.pt_BR'         => ['nullable', 'string', 'max:255'],
+            'about'                 => ['nullable', 'array'],
+            'about.en'              => ['nullable', 'string', 'max:2000'],
+            'about.pt_BR'           => ['nullable', 'string', 'max:2000'],
+            'github_url'            => 'nullable|url:http,https|max:255',
+            'github_username'       => 'nullable|string|max:100',
+            'linkedin_url'          => 'nullable|url:http,https|max:255',
+            'linkedin_username'     => 'nullable|string|max:100',
+            'email'                 => 'nullable|email:rfc,dns|max:255',
+            'whatsapp'              => ['nullable', 'string', 'max:30', 'regex:/^[0-9]+$/'],
+            'whatsapp_label'        => 'nullable|string|max:30',
         ]);
 
         $profile = Profile::instance();

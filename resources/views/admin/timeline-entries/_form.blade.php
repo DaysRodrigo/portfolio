@@ -5,13 +5,22 @@
     {{-- Main fields --}}
     <div class="space-y-5 lg:col-span-2">
 
+        {{-- Title (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Title <span class="text-red-500">*</span></label>
-            <input type="text" name="title" value="{{ old('title', $timelineEntry->title ?? '') }}"
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                   required maxlength="120" autofocus
-                   placeholder="e.g. Senior Software Engineer, BSc Computer Science">
-            @error('title') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-center">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <input type="text" name="title[{{ $locale }}]"
+                           value="{{ old('title.' . $locale, $editing ? ($timelineEntry->getTranslation('title', $locale, false) ?? '') : '') }}"
+                           class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                           {{ $loop->first ? 'required autofocus' : '' }} maxlength="120"
+                           placeholder="{{ $loop->first ? 'e.g. Senior Software Engineer, BSc Computer Science' : '' }}">
+                </div>
+                @endforeach
+            </div>
+            @error('title.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
         <div>
@@ -50,13 +59,21 @@
             </div>
         </div>
 
+        {{-- Description (translatable textarea) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Description <span class="text-red-500">*</span></label>
-            <textarea name="description" rows="5" maxlength="5000"
-                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      required>{{ old('description', $timelineEntry->description ?? '') }}</textarea>
-            <p class="mt-1 text-xs text-gray-400">Max 5000 characters.</p>
-            @error('description') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-start">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 pt-2 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <textarea name="description[{{ $locale }}]" rows="5" maxlength="5000"
+                              class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                              {{ $loop->first ? 'required' : '' }}>{{ old('description.' . $locale, $editing ? ($timelineEntry->getTranslation('description', $locale, false) ?? '') : '') }}</textarea>
+                </div>
+                @endforeach
+            </div>
+            <p class="mt-1 text-xs text-gray-400">Max 5000 characters per language.</p>
+            @error('description.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
         <div>

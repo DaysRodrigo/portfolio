@@ -31,10 +31,10 @@ it('admin can create a project', function () {
 
     $this->actingAs($user)
         ->post('/admin/projects', [
-            'title'         => 'My Project',
-            'slug'          => 'my-project',
-            'description'   => 'A test project.',
-            'status'        => 'draft',
+            'title'       => ['en' => 'My Project'],
+            'slug'        => 'my-project',
+            'description' => ['en' => 'A test project.'],
+            'status'      => 'draft',
             'display_order' => 0,
         ])
         ->assertRedirect('/admin/projects');
@@ -48,17 +48,18 @@ it('admin create validates required fields', function () {
     $this->actingAs($user)
         ->post('/admin/projects', [])
         ->assertSessionHasErrors(['title', 'slug', 'description', 'status']);
+    // 'title' and 'description' errors fire on the parent key when the array is missing entirely
 });
 
 it('admin can update a project', function () {
     $user    = User::factory()->create();
-    $project = Project::factory()->create(['title' => 'Old Title', 'slug' => 'old-title']);
+    $project = Project::factory()->create(['title' => ['en' => 'Old Title'], 'slug' => 'old-title']);
 
     $this->actingAs($user)
         ->put("/admin/projects/{$project->id}", [
-            'title'         => 'New Title',
+            'title'         => ['en' => 'New Title'],
             'slug'          => 'new-title',
-            'description'   => 'Updated.',
+            'description'   => ['en' => 'Updated.'],
             'status'        => 'published',
             'display_order' => 1,
         ])
@@ -84,9 +85,9 @@ it('slug must be unique on create', function () {
 
     $this->actingAs($user)
         ->post('/admin/projects', [
-            'title'       => 'Another',
+            'title'       => ['en' => 'Another'],
             'slug'        => 'taken-slug',
-            'description' => 'Desc',
+            'description' => ['en' => 'Desc'],
             'status'      => 'draft',
         ])
         ->assertSessionHasErrors('slug');

@@ -32,15 +32,19 @@ class TimelineEntryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'type'          => ['required', Rule::enum(TimelineType::class)],
-            'title'         => 'required|string|max:120',
-            'organization'  => 'required|string|max:120',
-            'location'      => 'required|string|max:120',
-            'start_date'    => 'required|date_format:Y-m',
-            'end_date'      => 'nullable|date_format:Y-m|after_or_equal:start_date',
-            'description'   => 'required|string|max:5000',
-            'skills'        => 'nullable|string|max:2000',
-            'display_order' => 'nullable|integer|min:0|max:65535',
+            'type'               => ['required', Rule::enum(TimelineType::class)],
+            'title'              => ['required', 'array'],
+            'title.en'           => ['required', 'string', 'max:120'],
+            'title.pt_BR'        => ['nullable', 'string', 'max:120'],
+            'organization'       => 'required|string|max:120',
+            'location'           => 'required|string|max:120',
+            'start_date'         => 'required|date_format:Y-m',
+            'end_date'           => 'nullable|date_format:Y-m|after_or_equal:start_date',
+            'description'        => ['required', 'array'],
+            'description.en'     => ['required', 'string', 'max:5000'],
+            'description.pt_BR'  => ['nullable', 'string', 'max:5000'],
+            'skills'             => 'nullable|string|max:2000',
+            'display_order'      => 'nullable|integer|min:0|max:65535',
         ]);
 
         $entry = TimelineEntry::create($this->prepareData($data));
@@ -61,15 +65,19 @@ class TimelineEntryController extends Controller
     public function update(Request $request, TimelineEntry $timelineEntry): RedirectResponse
     {
         $data = $request->validate([
-            'type'          => ['required', Rule::enum(TimelineType::class)],
-            'title'         => 'required|string|max:120',
-            'organization'  => 'required|string|max:120',
-            'location'      => 'required|string|max:120',
-            'start_date'    => 'required|date_format:Y-m',
-            'end_date'      => 'nullable|date_format:Y-m|after_or_equal:start_date',
-            'description'   => 'required|string|max:5000',
-            'skills'        => 'nullable|string|max:2000',
-            'display_order' => 'nullable|integer|min:0|max:65535',
+            'type'               => ['required', Rule::enum(TimelineType::class)],
+            'title'              => ['required', 'array'],
+            'title.en'           => ['required', 'string', 'max:120'],
+            'title.pt_BR'        => ['nullable', 'string', 'max:120'],
+            'organization'       => 'required|string|max:120',
+            'location'           => 'required|string|max:120',
+            'start_date'         => 'required|date_format:Y-m',
+            'end_date'           => 'nullable|date_format:Y-m|after_or_equal:start_date',
+            'description'        => ['required', 'array'],
+            'description.en'     => ['required', 'string', 'max:5000'],
+            'description.pt_BR'  => ['nullable', 'string', 'max:5000'],
+            'skills'             => 'nullable|string|max:2000',
+            'display_order'      => 'nullable|integer|min:0|max:65535',
         ]);
 
         $timelineEntry->update($this->prepareData($data));

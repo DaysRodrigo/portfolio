@@ -5,12 +5,21 @@
     {{-- Main fields --}}
     <div class="space-y-5 lg:col-span-2">
 
+        {{-- Title (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Title <span class="text-red-500">*</span></label>
-            <input type="text" name="title" value="{{ old('title', $project->title ?? '') }}"
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                   required maxlength="120">
-            @error('title') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-center">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <input type="text" name="title[{{ $locale }}]"
+                           value="{{ old('title.' . $locale, $editing ? ($project->getTranslation('title', $locale, false) ?? '') : '') }}"
+                           class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                           {{ $loop->first ? 'required' : '' }} maxlength="120">
+                </div>
+                @endforeach
+            </div>
+            @error('title.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
         <div>
@@ -21,21 +30,37 @@
             @error('slug') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Short Description (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Short Description <span class="text-red-500">*</span></label>
-            <textarea name="description" rows="3" maxlength="2000"
-                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      required>{{ old('description', $project->description ?? '') }}</textarea>
-            <p class="mt-1 text-xs text-gray-400">Max 2000 characters.</p>
-            @error('description') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-start">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 pt-2 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <textarea name="description[{{ $locale }}]" rows="3" maxlength="2000"
+                              class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                              {{ $loop->first ? 'required' : '' }}>{{ old('description.' . $locale, $editing ? ($project->getTranslation('description', $locale, false) ?? '') : '') }}</textarea>
+                </div>
+                @endforeach
+            </div>
+            <p class="mt-1 text-xs text-gray-400">Max 2000 characters per language.</p>
+            @error('description.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Long Description (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Long Description</label>
-            <textarea name="long_description" rows="6" maxlength="10000"
-                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      >{{ old('long_description', $project->long_description ?? '') }}</textarea>
-            <p class="mt-1 text-xs text-gray-400">Max 10 000 characters.</p>
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-start">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 pt-2 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <textarea name="long_description[{{ $locale }}]" rows="6" maxlength="10000"
+                              class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                              >{{ old('long_description.' . $locale, $editing ? ($project->getTranslation('long_description', $locale, false) ?? '') : '') }}</textarea>
+                </div>
+                @endforeach
+            </div>
+            <p class="mt-1 text-xs text-gray-400">Max 10 000 characters per language.</p>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2">

@@ -11,30 +11,59 @@
             @error('name') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Job Title (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Job Title <span class="text-red-500">*</span></label>
-            <input type="text" name="job_title" value="{{ old('job_title', $profile->job_title) }}"
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                   required maxlength="100" placeholder="e.g. Backend Engineer">
-            @error('job_title') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-center">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <input type="text" name="job_title[{{ $locale }}]"
+                           value="{{ old('job_title.' . $locale, $profile->getTranslation('job_title', $locale, false) ?? '') }}"
+                           class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                           {{ $loop->first ? 'required' : '' }} maxlength="100"
+                           placeholder="{{ $loop->first ? 'e.g. Backend Engineer' : '' }}">
+                </div>
+                @endforeach
+            </div>
+            @error('job_title.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
+        {{-- Tagline (translatable) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">Tagline <span class="text-red-500">*</span></label>
-            <input type="text" name="tagline" value="{{ old('tagline', $profile->tagline) }}"
-                   class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                   required maxlength="255" placeholder="e.g. Building reliable systems with PHP, Laravel & Docker.">
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-center">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <input type="text" name="tagline[{{ $locale }}]"
+                           value="{{ old('tagline.' . $locale, $profile->getTranslation('tagline', $locale, false) ?? '') }}"
+                           class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                           {{ $loop->first ? 'required' : '' }} maxlength="255"
+                           placeholder="{{ $loop->first ? 'e.g. Building reliable systems with PHP, Laravel & Docker.' : '' }}">
+                </div>
+                @endforeach
+            </div>
             <p class="mt-1 text-xs text-gray-400">Short punchy line shown in the hero, below the job title.</p>
-            @error('tagline') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            @error('tagline.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
+        {{-- About (translatable textarea) --}}
         <div>
             <label class="mb-1 block text-sm font-medium">About</label>
-            <textarea name="about" rows="6" maxlength="2000"
-                      class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                      placeholder="A personal paragraph — who you are, where you come from, what drives you.">{{ old('about', $profile->about) }}</textarea>
+            <div class="divide-y divide-gray-200 overflow-hidden rounded-lg border border-gray-300 focus-within:border-indigo-500 focus-within:ring-1 focus-within:ring-indigo-500">
+                @foreach(config('portfolio.locales') as $locale => $label)
+                <div class="flex items-start">
+                    <span class="flex w-10 shrink-0 select-none items-center justify-center self-stretch border-r border-gray-200 pt-2 text-xs font-bold {{ $loop->first ? 'text-indigo-600' : 'text-gray-400' }}">{{ $label }}</span>
+                    <textarea name="about[{{ $locale }}]" rows="5" maxlength="2000"
+                              class="flex-1 px-3 py-2 text-sm focus:outline-none"
+                              placeholder="{{ $loop->first ? 'A personal paragraph — who you are, where you come from, what drives you.' : '' }}"
+                              >{{ old('about.' . $locale, $profile->getTranslation('about', $locale, false) ?? '') }}</textarea>
+                </div>
+                @endforeach
+            </div>
             <p class="mt-1 text-xs text-gray-400">Shown below the tagline in the hero section. Max 2000 characters.</p>
-            @error('about') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
+            @error('about.en') <p class="mt-1 text-xs text-red-500">{{ $message }}</p> @enderror
         </div>
 
     </div>

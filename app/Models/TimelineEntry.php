@@ -6,9 +6,14 @@ namespace App\Models;
 
 use App\Enums\TimelineType;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class TimelineEntry extends Model
 {
+    use HasTranslations;
+
+    public array $translatable = ['title', 'description'];
+
     protected $fillable = [
         'type',
         'title',

@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
 
 class Profile extends Model
 {
+    use HasTranslations;
+
+    public array $translatable = ['job_title', 'tagline', 'about'];
+
     protected $fillable = [
         'name',
         'job_title',
@@ -28,8 +33,8 @@ class Profile extends Model
             ['id' => 1],
             [
                 'name'               => 'Rodrigo Dias Sales',
-                'job_title'          => 'Backend Engineer',
-                'tagline'            => 'Building reliable systems with PHP, Laravel & Docker.',
+                'job_title'          => ['en' => 'Backend Engineer'],
+                'tagline'            => ['en' => 'Building reliable systems with PHP, Laravel & Docker.'],
                 'about'              => null,
                 'github_url'         => 'https://github.com/DaysRodrigo',
                 'github_username'    => 'DaysRodrigo',
