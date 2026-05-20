@@ -1,14 +1,11 @@
 {
     "nav.home": "Home",
-    "nav.about": "About",
     "nav.projects": "Projects",
     "nav.skills": "Skills",
     "nav.timeline": "Timeline",
     "nav.contact": "Contact",
     "nav.toggle_language": "PT",
 
-    "hero.title": "Backend Engineer",
-    "hero.subtitle": "Building reliable systems with PHP, Laravel & Docker.",
     "hero.cta_projects": "View Projects",
     "hero.cta_contact": "Get in Touch",
 
@@ -30,13 +27,6 @@
     "timeline.title": "Timeline",
     "timeline.subtitle": "My professional journey.",
     "timeline.present": "Present",
-
-    "timeline.job.tempos_brilhantes.title": "Software Developer",
-    "timeline.job.tempos_brilhantes.description": "Sole technical owner of multiple production systems for a Portuguese NGO, working fully remotely from Brazil — Moodle-based LMS, a Node.js/MongoDB web app, 6+ WordPress sites, and support on a Laravel/Vue.js analytics platform. Automated recurring processes with PHP scripts, refactored legacy code, managed CI/CD via GitLab with Docker on Azure and Digital Ocean.",
-    "timeline.job.icatu.title": "Digital Tools Intern",
-    "timeline.job.icatu.description": "Supported development and maintenance of internal platforms. Web performance and SEO optimisation, CMS work, and front-end development with Angular, HTML, CSS and JavaScript, including GraphQL integrations.",
-    "timeline.edu.estacio.title": "Associate Degree in Systems Analysis and Development",
-    "timeline.edu.estacio.description": "Focused on software engineering, databases, algorithms, and web development fundamentals.",
 
     "contact.title": "Contact",
     "contact.subtitle": "Let's connect.",

@@ -262,15 +262,12 @@
     "Your email address is unverified.": "Seu endereço de e-mail não foi verificado."
 ,
     "nav.home": "Início",
-    "nav.about": "Sobre",
     "nav.projects": "Projetos",
     "nav.skills": "Habilidades",
     "nav.timeline": "Trajetória",
     "nav.contact": "Contato",
     "nav.toggle_language": "PT",
 
-    "hero.title": "Engenheiro Backend",
-    "hero.subtitle": "Construindo sistemas confiáveis com PHP, Laravel & Docker.",
     "hero.cta_projects": "Ver Projetos",
     "hero.cta_contact": "Entre em Contato",
 
@@ -292,13 +289,6 @@
     "timeline.title": "Trajetória",
     "timeline.subtitle": "Minha jornada profissional.",
     "timeline.present": "Presente",
-
-    "timeline.job.tempos_brilhantes.title": "Desenvolvedor",
-    "timeline.job.tempos_brilhantes.description": "Atuação solo na manutenção de múltiplos sistemas em produção para ONG portuguesa (100% remoto): LMS em Moodle, aplicação Node.js/MongoDB, 6+ sites WordPress e apoio em plataforma analítica Laravel/Vue.js. Automação de processos operacionais via scripts PHP, refatoração de código legado e gestão de pipelines CI/CD via GitLab com deploys Docker no Azure e Digital Ocean.",
-    "timeline.job.icatu.title": "Estagiário de Ferramentas Digitais",
-    "timeline.job.icatu.description": "Otimização de performance e SEO de páginas web, manutenção de CMS e desenvolvimento front-end com Angular, HTML, CSS e JavaScript, incluindo integrações com GraphQL.",
-    "timeline.edu.estacio.title": "Análise e Desenvolvimento de Sistemas",
-    "timeline.edu.estacio.description": "Formação em engenharia de software, banco de dados, algoritmos e fundamentos de desenvolvimento web.",
 
     "contact.title": "Contato",
     "contact.subtitle": "Vamos nos conectar.",

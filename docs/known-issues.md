@@ -68,13 +68,6 @@ JavaScript's ASI (Automatic Semicolon Insertion) does not insert a semicolon bef
 
 ## Open issues
 
-### ISSUE-001 — Translation keys for old hardcoded timeline entries are now unused
-**Status:** Resolved (entries recreated in DB; keys can be cleaned from lang files)  
-**Detail:** `lang/en.json` and `lang/pt_BR.json` contain keys like `timeline.job.tempos_brilhantes.*` and `timeline.edu.estacio.*` that were used by the deleted `TimelineData.php`. The three entries have been recreated in the DB via tinker. The translation keys are now dead code.  
-**Action:** Safe to delete `timeline.job.*` and `timeline.edu.*` keys from both lang files.
-
----
-
 ### ISSUE-002 — GITHUB_TOKEN not configured
 **Status:** Open  
 **Detail:** `.env` does not have `GITHUB_TOKEN` set. The "Sync GitHub" button on projects will fail silently (logs the error) until the token is added.  
@@ -82,10 +75,3 @@ JavaScript's ASI (Automatic Semicolon Insertion) does not insert a semicolon bef
 ```
 GITHUB_TOKEN=ghp_...
 ```
-
----
-
-### ISSUE-003 — `app/Data/` directory is now empty
-**Status:** Open (cosmetic)  
-**Detail:** `TimelineData.php` was the only file in `app/Data/`. The directory is now empty.  
-**Action:** Either delete the directory or repurpose it if a new data class is needed.
