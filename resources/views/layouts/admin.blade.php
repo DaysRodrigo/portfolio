@@ -20,6 +20,10 @@
                    class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.projects.*') ? 'font-semibold text-gray-900' : '' }}">
                     Projects
                 </a>
+                <a href="{{ route('admin.skill-tags.index') }}"
+                   class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.skill-tags.*') ? 'font-semibold text-gray-900' : '' }}">
+                    Skills
+                </a>
                 <a href="{{ route('home') }}" target="_blank" class="text-gray-600 hover:text-gray-900">
                     View Site ↗
                 </a>
