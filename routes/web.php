@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\SkillTagController as AdminSkillTagController;
+use App\Http\Controllers\Admin\TimelineEntryController as AdminTimelineEntryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'throttle.otp', '2fa
         ->name('projects.images.destroy');
 
     Route::resource('skill-tags', AdminSkillTagController::class);
+    Route::resource('timeline-entries', AdminTimelineEntryController::class);
 });
 
 require __DIR__.'/auth.php';

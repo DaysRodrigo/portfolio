@@ -10,13 +10,16 @@
         <p class="mt-2 text-gray-500 dark:text-gray-400">{{ __('timeline.subtitle') }}</p>
     </div>
 
+    @if($entries->isEmpty())
+    <p class="text-gray-500 dark:text-gray-400">Nothing here yet.</p>
+    @else
     <ol class="relative border-l border-gray-200 dark:border-gray-800">
         @foreach($entries as $entry)
         <li class="mb-10 ml-6">
             {{-- Icon --}}
             <span class="absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ring-8 ring-white dark:ring-gray-950
-                {{ $entry['type'] === 'work' ? 'bg-indigo-600' : 'bg-emerald-600' }}">
-                @if($entry['type'] === 'work')
+                {{ $entry->type === \App\Enums\TimelineType::Work ? 'bg-indigo-600' : 'bg-emerald-600' }}">
+                @if($entry->type === \App\Enums\TimelineType::Work)
                 <svg class="h-3 w-3 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zm-9 9H7v-2h4v2zm6 0h-4v-2h4v2zM9 7V5a1 1 0 011-1h4a1 1 0 011 1v2H9z"/>
                 </svg>
@@ -29,23 +32,23 @@
 
             <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-950">
                 <div class="mb-1 flex flex-wrap items-center justify-between gap-2">
-                    <h3 class="font-semibold">{{ $entry['title'] }}</h3>
+                    <h3 class="font-semibold">{{ $entry->title }}</h3>
                     <time class="text-xs text-gray-500 dark:text-gray-400">
-                        {{ \Carbon\Carbon::createFromFormat('Y-m', $entry['start'])->format('M Y') }}
+                        {{ $entry->start_date->format('M Y') }}
                         —
-                        {{ $entry['end'] === 'present' ? 'Present' : \Carbon\Carbon::createFromFormat('Y-m', $entry['end'])->format('M Y') }}
+                        {{ $entry->end_date ? $entry->end_date->format('M Y') : __('timeline.present') }}
                     </time>
                 </div>
                 <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400">
-                    {{ $entry['company'] }}
-                    <span class="ml-2 font-normal text-gray-500 dark:text-gray-400">· {{ $entry['location'] }}</span>
+                    {{ $entry->organization }}
+                    <span class="ml-2 font-normal text-gray-500 dark:text-gray-400">· {{ $entry->location }}</span>
                 </p>
                 <p class="mt-3 text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {{ $entry['description'] }}
+                    {{ $entry->description }}
                 </p>
-                @if(!empty($entry['skills']))
+                @if(!empty($entry->skills))
                 <div class="mt-3 flex flex-wrap gap-1.5">
-                    @foreach($entry['skills'] as $skill)
+                    @foreach($entry->skills as $skill)
                     <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium dark:bg-gray-800">
                         {{ $skill }}
                     </span>
@@ -56,6 +59,7 @@
         </li>
         @endforeach
     </ol>
+    @endif
 </section>
 
 @endsection

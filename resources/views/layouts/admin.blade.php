@@ -24,6 +24,10 @@
                    class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.skill-tags.*') ? 'font-semibold text-gray-900' : '' }}">
                     Skills
                 </a>
+                <a href="{{ route('admin.timeline-entries.index') }}"
+                   class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.timeline-entries.*') ? 'font-semibold text-gray-900' : '' }}">
+                    Timeline
+                </a>
                 <a href="{{ route('home') }}" target="_blank" class="text-gray-600 hover:text-gray-900">
                     View Site ↗
                 </a>
