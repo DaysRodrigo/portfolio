@@ -12,9 +12,13 @@
     <nav class="border-b border-gray-200 bg-white">
         <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
             <div class="flex items-center gap-5 text-sm">
+                <a href="{{ route('admin.about.edit') }}"
+                   class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.about*') ? 'font-semibold text-gray-900' : '' }}">
+                    About
+                </a>
                 <a href="{{ route('admin.profile.edit') }}"
                    class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.profile*') ? 'font-semibold text-gray-900' : '' }}">
-                    Profile
+                    Account
                 </a>
                 <a href="{{ route('admin.projects.index') }}"
                    class="text-gray-600 hover:text-gray-900 {{ request()->routeIs('admin.projects.*') ? 'font-semibold text-gray-900' : '' }}">

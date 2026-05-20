@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\SkillTagController as AdminSkillTagController;
+use App\Http\Controllers\Admin\AboutController as AdminAboutController;
 use App\Http\Controllers\Admin\TimelineEntryController as AdminTimelineEntryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Public\HomeController;
@@ -32,6 +33,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'throttle.otp', '2fa
 
     Route::resource('skill-tags', AdminSkillTagController::class);
     Route::resource('timeline-entries', AdminTimelineEntryController::class);
+
+    Route::get('about', [AdminAboutController::class, 'edit'])->name('about.edit');
+    Route::patch('about', [AdminAboutController::class, 'update'])->name('about.update');
 });
 
 require __DIR__.'/auth.php';

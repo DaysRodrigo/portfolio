@@ -7,14 +7,21 @@
     <div class="mx-auto max-w-6xl px-4 sm:px-6">
         <div class="max-w-2xl">
             <p class="mb-3 text-sm font-semibold uppercase tracking-widest text-indigo-600 dark:text-indigo-400">
-                Backend Engineer
+                {{ $profile->job_title }}
             </p>
             <h1 class="mb-5 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-                {{ __('hero.title') }}<span class="text-indigo-600 dark:text-indigo-400">.</span>
+                {{ $profile->job_title }}<span class="text-indigo-600 dark:text-indigo-400">.</span>
             </h1>
-            <p class="mb-8 text-lg text-gray-600 dark:text-gray-400">
-                {{ __('hero.subtitle') }}
+            <p class="mb-4 text-lg text-gray-600 dark:text-gray-400">
+                {{ $profile->tagline }}
             </p>
+            @if($profile->about)
+            <p class="mb-8 text-gray-600 dark:text-gray-400 leading-relaxed">
+                {{ $profile->about }}
+            </p>
+            @else
+            <div class="mb-8"></div>
+            @endif
             <div class="flex flex-wrap gap-3">
                 <a href="#projects"
                    class="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700">
@@ -39,8 +46,8 @@
             @foreach($timeline as $item)
             <div class="relative">
                 <span class="absolute -left-[2.65rem] flex h-8 w-8 items-center justify-center rounded-full
-                    {{ $item['type'] === 'work' ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300' }}">
-                    @if($item['type'] === 'work')
+                    {{ $item->type === \App\Enums\TimelineType::Work ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900 dark:text-indigo-300' : 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900 dark:text-emerald-300' }}">
+                    @if($item->type === \App\Enums\TimelineType::Work)
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                   d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -55,18 +62,17 @@
 
                 <div>
                     <p class="mb-0.5 text-xs font-medium text-gray-400 dark:text-gray-500 uppercase tracking-wide">
-                        @php
-                            $start = \Carbon\Carbon::parse($item['start'])->translatedFormat('M Y');
-                            $end   = $item['end'] ? \Carbon\Carbon::parse($item['end'])->translatedFormat('M Y') : __('timeline.present');
-                        @endphp
-                        {{ $start }} – {{ $end }} · {{ $item['location'] }}
+                        {{ $item->start_date->translatedFormat('M Y') }}
+                        –
+                        {{ $item->end_date ? $item->end_date->translatedFormat('M Y') : __('timeline.present') }}
+                        · {{ $item->location }}
                     </p>
-                    <h3 class="text-lg font-semibold">{{ $item['title'] }}</h3>
-                    <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">{{ $item['company'] }}</p>
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ $item['description'] }}</p>
-                    @if(!empty($item['skills']))
+                    <h3 class="text-lg font-semibold">{{ $item->title }}</h3>
+                    <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400 mb-2">{{ $item->organization }}</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">{{ $item->description }}</p>
+                    @if(!empty($item->skills))
                     <div class="flex flex-wrap gap-1.5">
-                        @foreach($item['skills'] as $skill)
+                        @foreach($item->skills as $skill)
                         <span class="rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:bg-gray-700 dark:text-gray-300">
                             {{ $skill }}
                         </span>
@@ -294,7 +300,8 @@
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 lg:gap-6">
 
             {{-- GitHub --}}
-            <a href="https://github.com/DaysRodrigo" target="_blank" rel="noopener noreferrer"
+            @if($profile->github_url)
+            <a href="{{ $profile->github_url }}" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-gray-400 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-gray-500">
                 <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition group-hover:bg-gray-900 group-hover:text-white dark:bg-gray-700 dark:text-gray-300 dark:group-hover:bg-white dark:group-hover:text-gray-900">
                     <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -303,12 +310,16 @@
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">GitHub</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">DaysRodrigo</p>
+                    @if($profile->github_username)
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $profile->github_username }}</p>
+                    @endif
                 </div>
             </a>
+            @endif
 
             {{-- LinkedIn --}}
-            <a href="https://www.linkedin.com/in/days-rodrigo" target="_blank" rel="noopener noreferrer"
+            @if($profile->linkedin_url)
+            <a href="{{ $profile->linkedin_url }}" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#0A66C2]/40 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-[#0A66C2]/60">
                 <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition group-hover:bg-[#0A66C2] group-hover:text-white dark:bg-gray-700 dark:text-gray-300">
                     <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -317,12 +328,16 @@
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">LinkedIn</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">days-rodrigo</p>
+                    @if($profile->linkedin_username)
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $profile->linkedin_username }}</p>
+                    @endif
                 </div>
             </a>
+            @endif
 
             {{-- Email --}}
-            <a href="mailto:rodrigodcontato@gmail.com"
+            @if($profile->email)
+            <a href="mailto:{{ $profile->email }}"
                class="group flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-indigo-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-indigo-600">
                 <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition group-hover:bg-indigo-600 group-hover:text-white dark:bg-gray-700 dark:text-gray-300">
                     <svg class="h-7 w-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
@@ -331,12 +346,14 @@
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">Email</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 break-all">rodrigodcontato@gmail.com</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 break-all">{{ $profile->email }}</p>
                 </div>
             </a>
+            @endif
 
             {{-- WhatsApp --}}
-            <a href="https://wa.me/5521991623039" target="_blank" rel="noopener noreferrer"
+            @if($profile->whatsapp)
+            <a href="https://wa.me/{{ $profile->whatsapp }}" target="_blank" rel="noopener noreferrer"
                class="group flex flex-col items-center gap-4 rounded-2xl border border-gray-200 bg-white px-4 py-8 text-center shadow-sm transition hover:-translate-y-1 hover:border-[#25D366]/40 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:hover:border-[#25D366]/60">
                 <div class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100 text-gray-700 transition group-hover:bg-[#25D366] group-hover:text-white dark:bg-gray-700 dark:text-gray-300">
                     <svg class="h-7 w-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -345,9 +362,12 @@
                 </div>
                 <div>
                     <p class="text-sm font-semibold text-gray-900 dark:text-white">WhatsApp</p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">+55 21 99162-3039</p>
+                    @if($profile->whatsapp_label)
+                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ $profile->whatsapp_label }}</p>
+                    @endif
                 </div>
             </a>
+            @endif
 
         </div>
     </div>

@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Rodrigo Dias Sales — Backend Engineer specialising in PHP, Laravel & Docker.">
-    <title>@yield('title', 'Rodrigo Dias Sales — Backend Engineer')</title>
+    <meta name="description" content="{{ $profile->name }} — {{ $profile->tagline }}">
+    <title>@yield('title', $profile->name . ' — ' . $profile->job_title)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
         <nav class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
 
             <a href="{{ route('home') }}" class="text-lg font-semibold tracking-tight hover:text-indigo-600 dark:hover:text-indigo-400">
-                Rodrigo Dias
+                {{ $profile->name }}
             </a>
 
             {{-- Desktop nav --}}
@@ -109,7 +109,7 @@
     <footer class="border-t border-gray-200 bg-white py-8 dark:border-gray-800 dark:bg-gray-950">
         <div class="mx-auto max-w-6xl px-4 sm:px-6">
             <div class="flex flex-col items-center justify-between gap-2 text-sm text-gray-500 sm:flex-row dark:text-gray-400">
-                <p>&copy; {{ date('Y') }} Rodrigo Dias Sales. {{ __('footer.rights') }}</p>
+                <p>&copy; {{ date('Y') }} {{ $profile->name }}. {{ __('footer.rights') }}</p>
                 <p>{{ __('footer.built_with') }}</p>
             </div>
         </div>

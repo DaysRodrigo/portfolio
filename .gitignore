@@ -20,6 +20,7 @@ npm-debug.log
 yarn-error.log
 /auth.json
 /.claude
+/CLAUDE.md
 /.fleet
 /.idea
 /.nova
