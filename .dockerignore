@@ -1,0 +1,41 @@
+# Version control
+.git
+.github
+
+# Dependencies (rebuilt in image stages)
+vendor/
+node_modules/
+
+# Built assets (rebuilt in frontend stage)
+public/build/
+public/hot/
+
+# Laravel runtime directories (not needed in image)
+storage/logs/
+storage/framework/cache/
+storage/framework/sessions/
+storage/framework/views/
+bootstrap/cache/
+
+# Sensitive files — never bake into image
+.env
+.env.*
+!.env.example
+database/dumps/
+
+# Dev/local config
+docker-compose*.yml
+.phpunit.result.cache
+.phpstan.result.cache
+.php-cs-fixer.cache
+.phpactor.json
+.fleet/
+.idea/
+.vscode/
+.zed/
+
+# Docs and tests (not needed at runtime)
+tests/
+docs/
+*.md
+CLAUDE.md

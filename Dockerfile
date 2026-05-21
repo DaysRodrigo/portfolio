@@ -21,7 +21,7 @@ RUN composer install \
         --optimize-autoloader \
         --no-scripts
 COPY . .
-RUN composer dump-autoload --no-dev --optimize
+RUN composer dump-autoload --no-dev --optimize --no-scripts
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Stage 3 — Dev image (used by docker-compose.yml)
@@ -34,7 +34,7 @@ ARG GID=1000
 RUN groupmod -g ${GID} www-data \
     && usermod -u ${UID} -g ${GID} www-data
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
         git \
         curl \
         libpng-dev \
@@ -68,6 +68,9 @@ FROM php:8.4-fpm-alpine AS production
 
 ARG UID=1000
 ARG GID=1000
+
+# Upgrade base OS packages to patch known CVEs before adding extensions
+RUN apk update && apk upgrade --no-cache
 
 # Build deps needed only to compile PHP extensions + redis
 RUN apk add --no-cache --virtual .build-deps \
