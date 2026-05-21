@@ -2,6 +2,7 @@ services:
   app:
     build:
       context: .
+      target: dev
       args:
         UID: 1000
         GID: 1000
@@ -42,7 +43,7 @@ services:
     networks:
       - portfolio
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p${DB_ROOT_PASSWORD:-secret}"]
       interval: 10s
       timeout: 5s
       retries: 10

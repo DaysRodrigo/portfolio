@@ -79,3 +79,29 @@ jobs:
 
       - name: PHP CS Fixer (dry-run)
         run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: SSH deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            set -e
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            docker compose -f docker-compose.prod.yml build app
+            docker compose -f docker-compose.prod.yml up -d --remove-orphans
+            docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
+            docker compose -f docker-compose.prod.yml exec -T app php artisan config:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan route:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan view:cache
+            docker compose -f docker-compose.prod.yml exec -T app php artisan event:cache
+            docker image prune -f
