@@ -60,6 +60,29 @@ return [
             'report' => false,
         ],
 
+        /*
+         | Oracle Cloud Object Storage (S3-compatible API)
+         |
+         | Endpoint: https://{namespace}.compat.objectstorage.{region}.oraclecloud.com
+         | URL:      https://objectstorage.{region}.oraclecloud.com/n/{namespace}/b/{bucket}/o
+         |
+         | Credentials: OCI Console → Identity → Users → your user → Customer Secret Keys
+         | FILESYSTEM_DISK=oracle activates this disk in production.
+         */
+        'oracle' => [
+            'driver'                  => 's3',
+            'key'                     => env('ORACLE_KEY'),
+            'secret'                  => env('ORACLE_SECRET'),
+            'region'                  => env('ORACLE_REGION', 'sa-saopaulo-1'),
+            'bucket'                  => env('ORACLE_BUCKET'),
+            'endpoint'                => env('ORACLE_ENDPOINT'),
+            'url'                     => env('ORACLE_URL'),
+            'use_path_style_endpoint' => true,
+            'visibility'              => 'public',
+            'throw'                   => false,
+            'report'                  => false,
+        ],
+
     ],
 
     /*

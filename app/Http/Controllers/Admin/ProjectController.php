@@ -113,7 +113,7 @@ class ProjectController extends Controller
         foreach ($data['delete_images'] ?? [] as $imageId) {
             $image = $project->images()->find($imageId);
             if ($image) {
-                Storage::disk('public')->delete($image->path);
+                Storage::delete($image->path);
                 $image->delete();
             }
         }
@@ -135,7 +135,7 @@ class ProjectController extends Controller
     {
         abort_if($image->project_id !== $project->id, 404);
 
-        Storage::disk('public')->delete($image->path);
+        Storage::delete($image->path);
         $image->delete();
 
         return redirect()->route('admin.projects.edit', $project)
@@ -145,7 +145,7 @@ class ProjectController extends Controller
     public function destroy(Project $project): RedirectResponse
     {
         foreach ($project->images as $image) {
-            Storage::disk('public')->delete($image->path);
+            Storage::delete($image->path);
         }
 
         $title = $project->title;
@@ -179,7 +179,13 @@ class ProjectController extends Controller
         $order = $project->images()->max('order') ?? -1;
 
         foreach ($request->file('images') as $file) {
-            $path = $file->store("projects/{$project->id}", 'public');
+            $path = $file->store("projects/{$project->id}");
+
+            if ($path === false) {
+                Log::error('Image upload failed', ['project_id' => $project->id, 'original_name' => $file->getClientOriginalName()]);
+                continue;
+            }
+
             $project->images()->create(['path' => $path, 'order' => ++$order]);
         }
     }
