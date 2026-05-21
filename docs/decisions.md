@@ -64,6 +64,36 @@
 
 ---
 
+## ADR-008 — Oracle Cloud Object Storage for production images
+
+**Date:** 2026-05
+
+**Decision:** Production image storage uses Oracle Cloud Object Storage (S3-compatible API) via a dedicated `oracle` disk in `config/filesystems.php`. Locally, `FILESYSTEM_DISK=public`; in production, `FILESYSTEM_DISK=oracle`.
+
+**Reason:** Oracle Cloud Free Tier includes 20 GB object storage with no time limit. Railway free trial expired. Storage::url() and $file->store() use the default disk, so no disk is hardcoded in controllers — swapping is a single env var change.
+
+**Security notes:**
+- Credentials (`ORACLE_KEY`, `ORACLE_SECRET`) are env-only, never in code or version control.
+- Bucket visibility is public (portfolio images must be publicly accessible).
+- `use_path_style_endpoint: true` required for Oracle's S3-compatible endpoint.
+- CORS on the bucket must be restricted to the production domain (see ISSUE-003).
+- Customer Secret Keys should be rotated every 90 days (see ISSUE-004).
+- `'throw' => false` means upload failures return `false` instead of throwing; `storeImages()` logs the error and skips the DB record.
+
+---
+
+## ADR-009 — CSP allows unsafe-inline and unsafe-eval (Alpine.js trade-off)
+
+**Date:** 2026-05
+
+**Decision:** `Content-Security-Policy` includes `'unsafe-inline'` and `'unsafe-eval'` in `script-src`.
+
+**Reason:** Alpine.js v3 evaluates `x-data`, `x-on`, and `x-bind` expressions via `new Function()`, which requires `'unsafe-eval'`. Removing it breaks Alpine entirely. `'unsafe-inline'` is needed for Blade-rendered inline scripts (locale switching, project modal data). Upgrading to Alpine v4 with nonce-based CSP is the long-term fix but is out of scope for this version.
+
+**Mitigation:** `default-src 'self'` prevents loading external scripts. All user-controlled data is rendered via `{{ }}` (escaped) or `x-text` (auto-escaped), so the XSS surface is contained.
+
+---
+
 ## ADR-007 — Validation treats frontend and backend as independent
 
 **Date:** 2026-05
