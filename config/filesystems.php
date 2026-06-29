@@ -68,16 +68,21 @@ return [
          | or point GCS_KEY_FILE to the JSON file path (local/CI).
          | FILESYSTEM_DISK=gcs activates this disk in production.
          */
+        /*
+         | Google Cloud Storage
+         |
+         | Uses Application Default Credentials when running on GCP (no key file needed).
+         | FILESYSTEM_DISK=gcs activates this disk in production.
+         */
         'gcs' => [
-            'driver'     => 'gcs',
-            'key_file'   => env('GCS_KEY_FILE_JSON') ? json_decode(env('GCS_KEY_FILE_JSON'), true) : null,
-            'project_id' => env('GCS_PROJECT_ID'),
-            'bucket'     => env('GCS_BUCKET'),
+            'driver'      => 'gcs',
+            'project_id'  => env('GCS_PROJECT_ID'),
+            'bucket'      => env('GCS_BUCKET'),
             'path_prefix' => env('GCS_PATH_PREFIX', null),
-            'visibility' => 'public',
-            'metadata'   => ['cacheControl' => 'public, max-age=86400'],
-            'throw'      => false,
-            'report'     => false,
+            'visibility'  => 'public',
+            'metadata'    => ['cacheControl' => 'public, max-age=86400'],
+            'throw'       => false,
+            'report'      => false,
         ],
 
     ],
