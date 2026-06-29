@@ -78,17 +78,7 @@ GITHUB_TOKEN=ghp_...
 
 ---
 
-### ISSUE-003 — Oracle bucket CORS not configured
+### ISSUE-003 — GCS service account key rotation
 **Status:** Open (pre-production)  
-**Detail:** The Oracle Object Storage bucket does not have a CORS policy yet. Without it, any domain can make cross-origin requests to the bucket (reads are public anyway for a portfolio, but it's good hygiene).  
-**Action:** When creating the bucket in OCI Console → Object Storage → Bucket → CORS, add one rule:
-- Allowed Origins: `https://yourdomain.com`
-- Allowed Methods: `GET`
-- Max Age: `3600`
-
----
-
-### ISSUE-004 — Oracle Customer Secret Keys have no expiry
-**Status:** Open (pre-production)  
-**Detail:** OCI Customer Secret Keys do not expire by default. If the key leaks, it remains valid indefinitely.  
-**Action:** Rotate the key every 90 days. OCI Console → Identity → Users → your user → Customer Secret Keys → delete old, generate new, update `.env`/production env vars.
+**Detail:** GCP service account keys do not expire by default. If the JSON key leaks, it remains valid indefinitely.  
+**Action:** Rotate the key every 90 days. GCP Console → IAM → Service Accounts → your account → Keys → delete old, create new, update `GCS_KEY_FILE_JSON` in production env vars.

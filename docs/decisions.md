@@ -64,20 +64,18 @@
 
 ---
 
-## ADR-008 — Oracle Cloud Object Storage for production images
+## ADR-008 — Google Cloud Storage for production images
 
-**Date:** 2026-05
+**Date:** 2026-06
 
-**Decision:** Production image storage uses Oracle Cloud Object Storage (S3-compatible API) via a dedicated `oracle` disk in `config/filesystems.php`. Locally, `FILESYSTEM_DISK=public`; in production, `FILESYSTEM_DISK=oracle`.
+**Decision:** Production image storage uses Google Cloud Storage via a dedicated `gcs` disk in `config/filesystems.php`. Locally, `FILESYSTEM_DISK=public`; in production, `FILESYSTEM_DISK=gcs`.
 
-**Reason:** Oracle Cloud Free Tier includes 20 GB object storage with no time limit. Railway free trial expired. Storage::url() and $file->store() use the default disk, so no disk is hardcoded in controllers — swapping is a single env var change.
+**Reason:** Google Cloud Storage Always Free tier includes 5 GB in US regions with no expiry. The VM is already on GCP (us-east1), so storage and compute are co-located. Storage::url() and $file->store() use the default disk — swapping is a single env var change.
 
 **Security notes:**
-- Credentials (`ORACLE_KEY`, `ORACLE_SECRET`) are env-only, never in code or version control.
+- Credentials stored in `GCS_KEY_FILE_JSON` env var (JSON content of service account key), never in code or version control.
 - Bucket visibility is public (portfolio images must be publicly accessible).
-- `use_path_style_endpoint: true` required for Oracle's S3-compatible endpoint.
-- CORS on the bucket must be restricted to the production domain (see ISSUE-003).
-- Customer Secret Keys should be rotated every 90 days (see ISSUE-004).
+- Service account should have the minimum role: `Storage Object Creator` + `Storage Object Viewer`.
 - `'throw' => false` means upload failures return `false` instead of throwing; `storeImages()` logs the error and skips the DB record.
 
 ---

@@ -61,27 +61,23 @@ return [
         ],
 
         /*
-         | Oracle Cloud Object Storage (S3-compatible API)
+         | Google Cloud Storage
          |
-         | Endpoint: https://{namespace}.compat.objectstorage.{region}.oraclecloud.com
-         | URL:      https://objectstorage.{region}.oraclecloud.com/n/{namespace}/b/{bucket}/o
-         |
-         | Credentials: OCI Console → Identity → Users → your user → Customer Secret Keys
-         | FILESYSTEM_DISK=oracle activates this disk in production.
+         | Credentials: GCP Console → IAM → Service Accounts → create key (JSON)
+         | Store the JSON content in GCS_KEY_FILE_JSON env var (production)
+         | or point GCS_KEY_FILE to the JSON file path (local/CI).
+         | FILESYSTEM_DISK=gcs activates this disk in production.
          */
-        'oracle' => [
-            'driver'                      => 's3',
-            'key'                         => env('ORACLE_KEY'),
-            'secret'                      => env('ORACLE_SECRET'),
-            'region'                      => env('ORACLE_REGION', 'sa-saopaulo-1'),
-            'bucket'                      => env('ORACLE_BUCKET'),
-            'endpoint'                    => env('ORACLE_ENDPOINT'),
-            'url'                         => env('ORACLE_URL'),
-            'use_path_style_endpoint'     => true,
-            'use_aws_shared_config_files' => false,
-            'visibility'                  => 'public',
-            'throw'                       => false,
-            'report'                      => false,
+        'gcs' => [
+            'driver'     => 'gcs',
+            'key_file'   => env('GCS_KEY_FILE_JSON') ? json_decode(env('GCS_KEY_FILE_JSON'), true) : null,
+            'project_id' => env('GCS_PROJECT_ID'),
+            'bucket'     => env('GCS_BUCKET'),
+            'path_prefix' => env('GCS_PATH_PREFIX', null),
+            'visibility' => 'public',
+            'metadata'   => ['cacheControl' => 'public, max-age=86400'],
+            'throw'      => false,
+            'report'     => false,
         ],
 
     ],
