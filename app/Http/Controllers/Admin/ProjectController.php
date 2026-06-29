@@ -111,6 +111,7 @@ class ProjectController extends Controller
 
         // Delete marked images
         foreach ($data['delete_images'] ?? [] as $imageId) {
+            /** @var \App\Models\ProjectImage|null $image */
             $image = $project->images()->find($imageId);
             if ($image) {
                 Storage::delete($image->path);
@@ -145,6 +146,7 @@ class ProjectController extends Controller
     public function destroy(Project $project): RedirectResponse
     {
         foreach ($project->images as $image) {
+            /** @var \App\Models\ProjectImage $image */
             Storage::delete($image->path);
         }
 

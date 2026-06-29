@@ -32,7 +32,7 @@ class SecurityHeaders
         $vite   = app()->isLocal() ? 'http://localhost:5173 ws://localhost:5173' : '';
         $gfonts = 'https://fonts.googleapis.com https://fonts.gstatic.com';
 
-        return implode('; ', array_filter([
+        return implode('; ', [
             "default-src 'self'",
             // Alpine.js evaluates x-data/x-on expressions via new Function() which
             // requires 'unsafe-eval'. Removing it breaks Alpine entirely.
@@ -43,6 +43,6 @@ class SecurityHeaders
             "font-src 'self' $gfonts",
             "connect-src 'self'" . ($vite ? " $vite" : ''),
             "frame-ancestors 'none'",
-        ]));
+        ]);
     }
 }
